@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}პროფილის რედაქტირება - Railway Booking{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">პროფილის რედაქტირება</h2>
+                <p class="text-muted">განაახლეთ თქვენი მონაცემები ან პაროლი</p>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Main Card -->
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-header bg-primary bg-gradient text-white text-center py-3">
+                    <h4 class="mb-0"><i class="bi bi-person-gear me-2"></i>პროფილის მონაცემები</h4>
+                </div>
+
+                <div class="card-body p-4">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Profile Fields -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3 border-bottom pb-2">საწყისი ინფორმაცია</h5>
+
+                            <div class="mb-3">
+                                <label for="{{ u_form.username.id_for_label }}" class="form-label fw-semibold">
+                                    <i class="bi bi-person me-2 text-primary"></i>{{ u_form.username.label }}
+                                </label>
+                                {{ u_form.username }}
+                                {% if u_form.username.errors %}
+                                    <div class="text-danger small mt-1">{{ u_form.username.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ u_form.email.id_for_label }}" class="form-label fw-semibold">
+                                    <i class="bi bi-envelope me-2 text-primary"></i>{{ u_form.email.label }}
+                                </label>
+                                {{ u_form.email }}
+                                {% if u_form.email.errors %}
+                                    <div class="text-danger small mt-1">{{ u_form.email.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Password Fields (Optional) -->
+                        <div class="mb-4">
+                            <h5 class="text-warning mb-3 border-bottom pb-2">
+                                <i class="bi bi-shield-lock me-2"></i>პაროლის შეცვლა (არასავალდებულო)
+                            </h5>
+                            <p class="text-muted small mb-3">თუ არ გინდათ პაროლის შეცვლა, დატოვეთ ცარიელი</p>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">მიმდინარე პაროლი</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock text-warning"></i></span>
+                                    <input type="password" name="old_password" class="form-control" placeholder="მიმდინარე პაროლი">
+                                </div>
+                                {% if p_form.old_password.errors %}
+                                    <div class="text-danger small mt-1">{{ p_form.old_password.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">ახალი პაროლი</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-key text-warning"></i></span>
+                                        <input type="password" name="new_password1" class="form-control" placeholder="ახალი პაროლი">
+                                    </div>
+                                    {% if p_form.new_password1.errors %}
+                                        <div class="text-danger small mt-1">{{ p_form.new_password1.errors|striptags }}</div>
+                                    {% endif %}
+                                    {% if p_form.new_password1.help_text %}
+                                        <div class="form-text small">{{ p_form.new_password1.help_text }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">გაიმეორეთ ახალი პაროლი</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-key-fill text-warning"></i></span>
+                                        <input type="password" name="new_password2" class="form-control" placeholder="გაიმეორეთ">
+                                    </div>
+                                    {% if p_form.new_password2.errors %}
+                                        <div class="text-danger small mt-1">{{ p_form.new_password2.errors|striptags }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-3 fw-bold">
+                                <i class="bi bi-check-lg me-2"></i>ცვლილებების შენახვა
+                            </button>
+                            <a href="{% url 'users:profile' %}" class="btn btn-outline-secondary rounded-3">
+                                <i class="bi bi-x-lg me-2"></i>გაუქმება
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Back Link -->
+            <div class="text-center mt-3">
+                <a href="{% url 'users:profile' %}" class="text-muted text-decoration-none small">
+                    <i class="bi bi-arrow-left me-1"></i>პროფილზე დაბრუნება
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+</style>
+{% endblock %}

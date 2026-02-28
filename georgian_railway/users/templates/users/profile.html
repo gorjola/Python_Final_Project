@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block body_class %}page-booking-history{% endblock %}
+{% block content %}
+<div class="profile-container" style="max-width: 800px; margin: 40px auto; font-family: sans-serif;">
+
+    <div class="user-card" style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin-bottom: 30px; display: flex; align-items: center; gap: 20px; border: 1px solid #ddd; position: relative;">
+        <div class="avatar" style="font-size: 50px;">👤</div>
+        <div style="flex-grow: 1;">
+            <h2 style="margin: 0;">{{ user.username }}</h2>
+            <p style="color: #666; margin: 5px 0;">ელ-ფოსტა: {{ user.email }}</p>
+            <p style="font-size: 14px; color: #888;">სისტემაშია: {{ user.date_joined|date:"d M Y" }}</p>
+        </div>
+
+        <div class="action-buttons" style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="{% url 'users:profile_edit' %}" class="btn" style="background-color: #007bff; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-size: 14px; text-align: center;">
+                📝 რედაქტირება
+            </a>
+        </div>
+    </div>
+
+    <h3 style="color: #007bff; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 20px;">
+        🎫 ჩემი ჯავშნები
+    </h3>
+
+    {% if user_bookings %}
+        <div class="booking-list" style="margin-top: 20px;">
+            {% for booking in user_bookings %}
+                <div class="booking-item" style="border-left: 5px solid #007bff; background: white; padding: 15px; margin-bottom: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <div style="display: flex; justify-content: space-between;">
+                        <strong>{{ booking.route.departure_station.city }} → {{ booking.route.arrival_station.city }}</strong>
+                        {# შეცვლილია: აქ ჩაიწერა booking.final_price #}
+                        <span style="color: #28a745; font-weight: bold;">{{ booking.final_price }} ₾</span>
+                    </div>
+                    <div style="font-size: 14px; color: #555; margin-top: 5px;">
+                        📅 თარიღი: {{ booking.route.departure_time|date:"d/m/Y H:i" }} | 💺 სავარძელი: #{{ booking.seat_number }} | 🎫 კლასი: {{ booking.get_seat_type_display }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; color: #888;">
+            <p>თქვენ ჯერ არ გაქვთ დაჯავშნილი ბილეთები.</p>
+            <a href="{% url 'tickets:schedule' %}" style="color: #007bff;">იპოვე სასურველი რეისი</a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

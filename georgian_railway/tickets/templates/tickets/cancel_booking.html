@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}დაჯავშნის გაუქმება{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 50px auto; text-align: center;">
+    <h2>დაჯავშნის გაუქმება</h2>
+    
+    <div style="margin: 30px 0; text-align: left; background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <p><strong>მარშრუტი:</strong> {{ booking.route.route_name }}</p>
+        <p><strong>მატარებელი:</strong> {{ booking.route.train.number }}</p>
+        <p><strong>გასვლა:</strong> {{ booking.route.departure_station }} → {{ booking.route.arrival_station }}</p>
+        <p><strong>თარიღი:</strong> {{ booking.route.departure_time|date:"d.m.Y H:i" }}</p>
+        <p><strong>სავარძელი:</strong> #{{ booking.seat_number }}</p>
+    </div>
+    
+    <p style="color: #e74c3c; font-size: 18px; margin-bottom: 30px;">
+        ნამდვილად გსურთ ამ ბილეთის გაუქმება?
+    </p>
+    
+    <form method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" style="margin-right: 10px;">დიახ, გაუქმება</button>
+        <a href="{% url 'tickets:booking_history' %}" class="btn" style="background: #95a5a6;">არა, უკან დაბრუნება</a>
+    </form>
+</div>
+{% endblock %}
