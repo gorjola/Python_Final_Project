@@ -61,6 +61,11 @@ class BookTicketView(LoginRequiredMixin, FormView):
             id=self.route_id,
             is_active=True
         )
+        self.route = get_object_or_404(Route, id=self.route_id, is_active=True)
+
+        if self.route.departure_time <= timezone.now():
+            messages.error(request, 'ეს მატარებელი უკვე გავიდა!')
+            return redirect('tickets:schedule')
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
